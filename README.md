@@ -1,66 +1,66 @@
 # MoE-3DGS-Dataset
 
-A multi-view video dataset for 3D Gaussian video reconstruction and streaming.
+这里存放的是 MoE-3DGS 实验用到的多视角图像序列，方便下载和复现实验。图片按原来的帧号和相机编号整理，没有重新编码。
 
-## Available sequences
+Action_15 和 Action_16 已经上传。Action_09 正在上传，全部校验完成后会开放下载。
 
-| Sequence | Synchronized frames | Cameras per frame | PNG images | Resolution | Original size |
-| --- | ---: | ---: | ---: | --- | ---: |
-| [Action_15](https://github.com/AimerReol/MoE-3DGS-Dataset/releases/tag/action15-v1) | 2,155 | 32 | 68,960 | 4096 x 3000 | 132.23 GiB |
-| [Action_16](https://github.com/AimerReol/MoE-3DGS-Dataset/releases/tag/action16-v1) | 2,190 | 32 | 70,080 | 4096 x 3000 | 191.90 GiB |
+## 先看看序列
 
-These releases contain the original PNG images from the supplied `WhiteBg` directories. Frame numbers and camera filenames are preserved.
+每张预览选了三个时间点，以及 `00`、`16` 两个相机视角。预览做了缩小，下载包里是原始 PNG。
 
-```text
-Action_15/
-  WhiteBg/
-    000000/
-      00.png
-      ...
-      31.png
-    ...
-    002154/
-Action_16/
-  WhiteBg/
-    000000/
-      00.png
-      ...
-      31.png
-    ...
-    002189/
-```
+### Action_09
 
-## Download and extract
+![Action_09 在三个时间点、两个相机视角下的原始图像预览](assets/previews/Action_09.jpg)
 
-The sequences are distributed as independent ZIP archives under Releases. Action_15 has 77 archives and Action_16 has 112. Each archive contains a consecutive range of complete synchronized frames. Extract the archives into the same destination directory to reconstruct the directory tree.
+### Action_15
 
-The images retain their original bytes. Archives use ZIP store mode because PNG images are already compressed. Every ZIP is below 2 GiB.
+![Action_15 在三个时间点、两个相机视角下的原始图像预览](assets/previews/Action_15.jpg)
 
-Using Python 3.9 or newer:
+### Action_16
+
+![Action_16 在三个时间点、两个相机视角下的原始图像预览](assets/previews/Action_16.jpg)
+
+## 数据和下载
+
+| 序列 | 帧数 | 相机数 | PNG 数量 | 原始大小 | 下载 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Action_09 | 966 | 32 | 30,911 | 130.37 GiB | 上传中 |
+| Action_15 | 2,155 | 32 | 68,960 | 132.23 GiB | [Release](https://github.com/AimerReol/MoE-3DGS-Dataset/releases/tag/action15-v1) |
+| Action_16 | 2,190 | 32 | 70,080 | 191.90 GiB | [Release](https://github.com/AimerReol/MoE-3DGS-Dataset/releases/tag/action16-v1) |
+
+图片分辨率都是 **4096 × 3000**。Action_09 的最后一帧（`000965`）缺少 `23.png`：前 965 帧都有 32 个视角，最后一帧有 31 个。这里保留源文件的实际情况。
+
+数据比较大，所以放在 GitHub Releases 里：Action_09 分成 77 包、Action_15 分成 77 包、Action_16 分成 112 包。每包小于 2 GiB，可以单独解压；同一个序列的所有包解压到同一个位置即可。
+
+有 Python 3.9 或更新版本的话，可以用仓库里的下载脚本：
 
 ```bash
 python tools/download_dataset.py --sequence Action_15 --output ./datasets
 python tools/download_dataset.py --sequence Action_16 --output ./datasets
+python tools/download_dataset.py --sequence Action_09 --output ./datasets
 ```
 
-To download both:
+等三个序列都上传好后，也可以把 `--sequence` 换成 `all`，一次下载这三个序列。
 
-```bash
-python tools/download_dataset.py --sequence all --output ./datasets
+想先取少量数据试一下，可以加 `--end-frame 9`。脚本会下载覆盖这些帧的完整分包，校验 SHA-256 后再解压。中断后重新运行同一条命令就能继续，已完成的分包会跳过。临时 ZIP 默认在解压后删除，想保留的话加 `--keep-archives`。
+
+不使用脚本也可以：在对应 Release 下载 ZIP 和 `Action_XX_SHA256SUMS.txt`，核对校验值后解压。Release 里还有 `Action_XX_manifest.json`（分包列表、帧范围和校验值）以及 `Action_XX_files.json.gz`（原始文件清单）。
+
+## 解压后的目录
+
+三个序列使用相同的结构：
+
+```text
+Action_XX/
+  WhiteBg/
+    000000/
+      00.png
+      ...
+      31.png
+    000001/
+      ...
 ```
 
-The downloader checks SHA-256 before extraction and records completed archives so an interrupted run can continue. It deletes successfully extracted temporary archives by default. Use `--keep-archives` to retain them. For a short trial, use `--end-frame 9`; the downloader selects the complete archive covering the requested frames.
+六位数字目录表示帧号，`00.png` 到 `31.png` 对应相机编号。压缩包只做打包，保留了图片的原始字节和目录结构。
 
-Each release also contains:
-
-- `Action_XX_manifest.json`: archive names, byte sizes, frame ranges, file counts, and SHA-256 values.
-- `Action_XX_SHA256SUMS.txt`: checksums for all archives and the manifest.
-- `Action_XX_files.json.gz`: the source file inventory with relative paths and original byte sizes.
-
-To download manually, obtain the ZIP files and checksum list from the corresponding release, verify the files, and extract them into a common directory.
-
-## Data details
-
-Camera indices are `00` through `31`. Timestamps are represented by the original six-digit frame directory names. Image counts were checked against all 32 camera filenames in every frame directory.
-
-The supplied sequence folders for this upload contain RGB PNG images. Camera calibration files, segmentation masks, and reconstruction checkpoints can be documented in separate releases if supplied later. The capture frame rate is not specified in these source folders.
+这次上传的文件只有 `WhiteBg` 下的图像，暂时没有相机标定、分割掩码或重建模型。源目录也没有提供拍摄帧率。后续如果补充这些文件，会在这里说明。
