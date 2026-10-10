@@ -1,4 +1,4 @@
-"""Download independent, SHA256-verified Action_15/Action_16 ZIP archives."""
+"""Download and extract the original Action_09, Action_15 and Action_16 images."""
 import argparse
 import hashlib
 import json
@@ -56,7 +56,7 @@ def extract(path, output, sequence, expected_count):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--sequence', choices=['Action_15','Action_16','all'], default='all')
+    parser.add_argument('--sequence', choices=['Action_09','Action_15','Action_16','all'], default='all')
     parser.add_argument('--output', type=Path, default=Path('datasets'))
     parser.add_argument('--start-frame', type=int, default=0)
     parser.add_argument('--end-frame', type=int)
@@ -68,10 +68,15 @@ def main():
     cache.mkdir(exist_ok=True)
     state_path = cache / 'completed.json'
     completed = json.loads(state_path.read_text(encoding='utf-8')) if state_path.exists() else {}
-    sequences = ['Action_15','Action_16'] if args.sequence=='all' else [args.sequence]
+    sequences = ['Action_15','Action_16','Action_09'] if args.sequence=='all' else [args.sequence]
     for sequence in sequences:
         tag = sequence.lower().replace('_','') + '-v1'
-        manifest = fetch_json(f'{BASE}/{tag}/{sequence}_manifest.json')
+        try:
+            manifest = fetch_json(f'{BASE}/{tag}/{sequence}_manifest.json')
+        except urllib.error.HTTPError as error:
+            if error.code == 404:
+                raise SystemExit(f'{sequence}: release is not published yet. Check the repository README for upload status.') from None
+            raise
         for part in manifest['archives']:
             if part['end_frame'] < args.start_frame or (args.end_frame is not None and part['start_frame'] > args.end_frame):
                 continue
