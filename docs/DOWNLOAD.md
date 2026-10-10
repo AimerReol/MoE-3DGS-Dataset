@@ -12,7 +12,7 @@ python tools/download_dataset.py --sequence Action_16 --output ./data
 python tools/download_dataset.py --sequence Action_09 --output ./data
 ```
 
-Available releases are listed in the [sequence table](../README.md#sequences). A sequence marked **Not yet released** has no public download. After all three sequences are released, `--sequence all` downloads the full collection.
+Available releases are listed in the [sequence table](../README.md#sequences). A sequence marked **Not yet released** has no public download. Once their releases are available, `--sequence all` downloads the three sequences currently supported by the downloader: Action_09, Action_15 and Action_16.
 
 The downloader uses only the Python standard library (Python 3.9+). It verifies each archive against the manifest before extraction. Successful downloads are recorded in `<output>/.downloads/completed.json`; rerunning the same command skips archives already extracted. Temporary ZIP files are removed after successful extraction unless `--keep-archives` is specified.
 
@@ -43,7 +43,7 @@ Each release includes the following metadata:
 | `Action_XX_SHA256SUMS.txt` | SHA-256 checksums for the ZIP archives and manifest. |
 | `Action_XX_files.json.gz` | Source image inventory with relative paths and byte sizes. |
 
-The known missing view in Action_09 is documented in the [data notes](../README.md#data-notes) and manifest. Existing images and frame folders are preserved without substituting the missing image.
+The known missing view in Action_09 is documented in its manifest. Existing images and frame folders are preserved without substituting the missing image.
 
 ## Manual download
 
