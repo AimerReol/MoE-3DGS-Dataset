@@ -1,10 +1,10 @@
 # MoE-3DGS-Dataset
 
-这里存放的是 MoE-3DGS 实验用到的多视角图像序列，方便下载和复现实验。图片按原来的帧号和相机编号整理，没有重新编码。
+把 MoE-3DGS 实验用到的多视角序列整理在这里，先放 Action_09、Action_15 和 Action_16。原始图片都在 Releases 里，下面选了几帧，可以先看看内容。
 
 Action_15 和 Action_16 已经上传。Action_09 正在上传，全部校验完成后会开放下载。
 
-## 先看看序列
+## 序列预览
 
 每张预览选了三个时间点，以及 `00`、`16` 两个相机视角。预览做了缩小，下载包里是原始 PNG。
 
@@ -28,7 +28,7 @@ Action_15 和 Action_16 已经上传。Action_09 正在上传，全部校验完�
 | Action_15 | 2,155 | 32 | 68,960 | 132.23 GiB | [Release](https://github.com/AimerReol/MoE-3DGS-Dataset/releases/tag/action15-v1) |
 | Action_16 | 2,190 | 32 | 70,080 | 191.90 GiB | [Release](https://github.com/AimerReol/MoE-3DGS-Dataset/releases/tag/action16-v1) |
 
-图片分辨率都是 **4096 × 3000**。Action_09 的最后一帧（`000965`）缺少 `23.png`：前 965 帧都有 32 个视角，最后一帧有 31 个。这里保留源文件的实际情况。
+图片分辨率都是 **4096 × 3000**。Action_09 的最后一帧（`000965`）缺少 `23.png`：前 965 帧都有 32 个视角，最后一帧有 31 个。这一张在源目录里就没有，下载包也按原样保留。
 
 数据比较大，所以放在 GitHub Releases 里：Action_09 分成 77 包、Action_15 分成 77 包、Action_16 分成 112 包。每包小于 2 GiB，可以单独解压；同一个序列的所有包解压到同一个位置即可。
 
