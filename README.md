@@ -14,7 +14,7 @@ The three sequences listed below contain **5,311 temporal frames and 169,951 PNG
 
 | Sequence | Frames | Views | Images | Size | Download |
 | --- | ---: | ---: | ---: | ---: | --- |
-| Action_09 | 966 | 32 | 30,911 | 130.37 GiB | Not yet released |
+| Action_09 | 966 | 32 | 30,911 | 130.37 GiB | [Release](https://github.com/AimerReol/MoE-3DGS-Dataset/releases/tag/action09-v1) |
 | Action_15 | 2,155 | 32 | 68,960 | 132.23 GiB | [Release](https://github.com/AimerReol/MoE-3DGS-Dataset/releases/tag/action15-v1) |
 | Action_16 | 2,190 | 32 | 70,080 | 191.90 GiB | [Release](https://github.com/AimerReol/MoE-3DGS-Dataset/releases/tag/action16-v1) |
 
